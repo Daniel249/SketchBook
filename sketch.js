@@ -30,13 +30,19 @@ function draw() {
 }
 
 
-function Punto(posx, posy) {
+function Punto() {
+    // color rgb
+    this.color_r = Math.floor(Math.random() * 255)
+    this.color_g = Math.floor(Math.random() * 255)
+    this.color_b = Math.floor(Math.random() * 255)
+
 	// position relative to square
-	this.pos_x = squareX + posx;
-	this.pos_y = squareY + posy;
+	this.pos_x = squareX + Math.floor(Math.random() * squareSize);
+	this.pos_y = squareY + Math.floor(Math.random() * squareSize);
 	// random velocity
-	this.speed_x = posx / 20;
-	this.speed_y = 4 - this.speed_x;
+	this.angle = Math.random() * TWO_PI;
+	this.speed_x = sin(this.angle) * 6;
+	this.speed_y = cos(this.angle) * 6;
 	// array of lines
 	this.lines_x = [];
 	this.lines_y = [];
@@ -46,7 +52,7 @@ function Punto(posx, posy) {
 		this.pos_x = this.pos_x + this.speed_x;
 		this.pos_y = this.pos_y + this.speed_y;
 		// set color blue
-		fill(0, 0, 255);
+		fill(this.color_r, this.color_g, this.color_b);
 		// disable outline when drawing
 		noStroke();
 		// draw
@@ -72,7 +78,7 @@ function Punto(posx, posy) {
 		var last_x = this.lines_x[0];
 		var last_y = this.lines_y[0];
 		// change color to green
-		stroke(0, 100, 100);
+		stroke(this.color_r, this.color_g, this.color_b);
 		// loop from second position in array
 		for (var i = 1; i < this.lines_x.length; i++) {
 			// draw line from last saved point to current point
@@ -89,9 +95,7 @@ function Punto(posx, posy) {
 
 function initDots(num) {
 	for (var i = 0; i < num; i++) {
-		var loc_x = Math.floor(Math.random(0, squareSize))
-		var loc_y = Math.floor(Math.random(0, squareSize))
-		var punto = new Punto(i * 10 + 2, i * 10);
+		var punto = new Punto();
 		Dots.push(punto);
 	}
 }
