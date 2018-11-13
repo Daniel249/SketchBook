@@ -12,7 +12,6 @@ var squareY = (canvasSize - squareSize) / 2;
 var Dots = []
 
 function draw() {
-
 	background(200);
 
 	// draw Red Square
@@ -38,11 +37,12 @@ function Punto() {
 
 	// position relative to square
 	this.pos_x = squareX + Math.floor(Math.random() * squareSize);
-	this.pos_y = squareY + Math.floor(Math.random() * squareSize);
+    this.pos_y = squareY + Math.floor(Math.random() * squareSize);
 	// random velocity
 	this.angle = Math.random() * TWO_PI;
 	this.speed_x = sin(this.angle) * 6;
-	this.speed_y = cos(this.angle) * 6;
+    this.speed_y = cos(this.angle) * 6;
+    
 	// array of lines
 	this.lines_x = [];
 	this.lines_y = [];
