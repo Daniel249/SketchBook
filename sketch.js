@@ -1,13 +1,13 @@
 function setup() {
-	createCanvas(600, 600);
+	createCanvas(canvasSize, canvasSize);
 	// initialize an ammount of Dots
 	var ammountDots = 10;
 	initDots(ammountDots);
 }
-
-var squareX = 75;
-var squareY = 75;
+var canvasSize = 600;
 var squareSize = 500;
+var squareX = (canvasSize - squareSize) / 2;
+var squareY = (canvasSize - squareSize) / 2;
 
 var Dots = []
 
