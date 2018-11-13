@@ -21,9 +21,9 @@ function draw() {
 	ellipse(squareX, squareY, 50, 50)
 	// draw Point
 	for (var i = 0; i < Dots.length; i++) {
-		Dots[i].update();
+        Dots[i].drawLines();
+        Dots[i].update();
 		Dots[i].checkCollision();
-		Dots[i].drawLines();
 	}
 
 }
