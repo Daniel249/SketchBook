@@ -21,7 +21,7 @@ var vertColor;
 var points = [];
 var counter = 0;
 var mainPoint = initializePoint();
-var dotSize = 7;
+var dotSize = 8;
 function setup() {
     // color size and color
     mainColor = color(204, 102, 0);
@@ -30,35 +30,69 @@ function setup() {
     createCanvas(canvas_x, canvas_y);
     background(200);
     ellipseMode(CENTER);
-    // init points randomly
-    points.push(initializePoint());
-    points.push(initializePoint());
-    points.push(initializePoint());
-
-    // draw points
     noStroke();
-    fill(vertColor);
-    for(let i = 0; i < points.length; i++) {
-        drawPoint(points[i], dotSize + 3); // vertices a little bigger
-    }
-    fill(mainColor);
-    drawPoint(mainPoint, dotSize);
+    allRandom();
+
 }
 
 function draw() {
-    if(mouseIsPressed) {
+    if(pInput) {
+        // playerInput();
+    }
+    else if(mouseIsPressed) {
+        if(points.length == 0) {
+            return;
+        }
         let num = rollDice(points.length);
         console.log(points);
         console.log(num);
         mainPoint = points[num].findMiddle(mainPoint.pos_x, mainPoint.pos_y);
         fill(mainColor);
-        drawPoint(mainPoint, dotSize);
+        drawPoint(mainPoint, dotSize - 3);
         counter++;
     }
 }
 
+var pInput = true;
+function mousePressed() {
+    if(pInput) {
+        let newPoint = new Punto(mouseX, mouseY);
+        points.push(newPoint);
+        fill(vertColor);
+        drawPoint(newPoint, dotSize);
+    }
+}
 
+function allRandom() {
+    background(200);
+    points = [];
+    let number = 3 // rollDice(4) + 1;
+    for(let i = 0; i < number; i++) {
+        points.push(initializePoint());
+    }
 
+    // draw points
+    noStroke();
+    fill(vertColor);
+    for(let i = 0; i < points.length; i++) {
+        drawPoint(points[i], dotSize); 
+    }
+    fill(mainColor);
+    drawPoint(mainPoint, dotSize - 3); // main a little smaller
+}
+function keyPressed() {
+    if(key === 'r' && pInput) {
+        allRandom();
+    } else if(keyCode === ENTER) {
+        pInput = false;
+    } else if(keyCode === BACKSPACE) {
+        pInput = true;
+        background(200);
+        points = [];
+        fill(mainColor);
+        drawPoint(mainPoint, dotSize - 3);
+    }
+}
 
 
 function initializePoint() {
