@@ -140,7 +140,7 @@ function updateSetings() {
     // update dot size
     let numCheck = document.getElementById("inputSize").value;
     if( !isNaN(numCheck) ) {
-        dotSize = numCheck;
+        dotSize = numCheck / 10;
     } else { 
         // If not a number alert player
     }
