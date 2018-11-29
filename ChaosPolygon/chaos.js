@@ -1,3 +1,4 @@
+// simple coordinate class
 class Punto {
     constructor(x, y) {
         this.pos_x = x;
@@ -15,15 +16,20 @@ class Punto {
 var canvas_x = 1200;
 var canvas_y = 800;
 var margin = 50;
+// color and size for vertex and dots
 var mainColor;
 var vertColor;
-
-var points = [];
-var counter = 0;
-var mainPoint = initializePoint();
-var dotSize = 2;
+var dotSize = 2; // player input through inputSize
 var vertSize = 10;
+// vertex array
+var points = [];
+// turn counter
+var counter = 0;
+// first dot. automatically initiallized
+var mainPoint = initializePoint();
+// helper for rule: cant repeat last dot
 var lastPoint;
+// how many loops per draw call. player input through inputSpeed
 var turnsPerFrame = 1000;
 function setup() {
     // color size and color
@@ -42,10 +48,13 @@ var ruleCantRepeatOn = false;
 function draw() {
     // check for ENTER and playerInput state
      if(keyIsDown(13) && !pInput) {
+         // if no vertex in array, dont even roll dice
         if(points.length == 0) {
             return;
         }
+        // loop turnsPerFrame times
         for(let i = 0; i < turnsPerFrame; i++) {
+            // roll dice until differente to lastPoint, if "rule: cant repeat" is on
             let num = rollDice(points.length);
             while(lastPoint === points[num] && ruleCantRepeatOn) {
                 num = rollDice(points.length);
@@ -122,18 +131,16 @@ function keyPressed() {
         
     } else if(keyCode === BACKSPACE) {
         // reset everything and redraw dot
-        pInput = true;
+        pInput = true; // go back to player input state
         background(200);
         points = [];
+
         fill(mainColor);
         drawPoint(mainPoint, dotSize);
-        if(mouseX < 0 || mouseY < 0) {
-            console.log("hola");
-        }
     }
 }
 
-// update run settings
+// update run settings. get values from input types and try to apply them
 function updateSetings() {
     // update bool rule. Rule: cant repeat vertex
     ruleCantRepeatOn = document.getElementById("inputRule").checked;
@@ -166,7 +173,7 @@ function initializePoint() {
 function drawPoint(punto, size) {
     ellipse(punto.pos_x, punto.pos_y, size, size);
 }
-
+// get number between 0 and numFaces - 1
 function rollDice(numFaces) {
     let randomDice = Math.floor( numFaces * Math.random() );
     return randomDice;
