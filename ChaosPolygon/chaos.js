@@ -24,6 +24,7 @@ var mainPoint = initializePoint();
 var dotSize = 2;
 var vertSize = 10;
 var lastPoint;
+var turnsPerFrame = 1000;
 function setup() {
     // color size and color
     mainColor = color(204, 102, 0);
@@ -39,11 +40,12 @@ function setup() {
 // Rule is on or off. Rule: can't repeat vertex
 var ruleCantRepeatOn = false;
 function draw() {
-     if(mouseIsPressed && !pInput) {
+    // check for ENTER and playerInput state
+     if(keyIsDown(13) && !pInput) {
         if(points.length == 0) {
             return;
         }
-        for(let i = 0; i < 1000; i++) {
+        for(let i = 0; i < turnsPerFrame; i++) {
             let num = rollDice(points.length);
             while(lastPoint === points[num] && ruleCantRepeatOn) {
                 num = rollDice(points.length);
@@ -67,11 +69,17 @@ var pInput = true;
 function mousePressed() {
     // if in input state
     if(pInput) {
-        let newPoint = new Punto(mouseX, mouseY);
-        points.push(newPoint);
-        // draw it
-        fill(vertColor);
-        drawPoint(newPoint, vertSize);
+        // if mouse inside canvas
+        if(mouseX > 0 && mouseX < canvas_x) {
+            if(mouseY > 0 && mouseY < canvas_y) {
+                // create vertex and add to array
+                let newPoint = new Punto(mouseX, mouseY);
+                points.push(newPoint);
+                // draw it
+                fill(vertColor);
+                drawPoint(newPoint, vertSize);
+            }
+        }
     }
 }
 // resets and adds 3 random vertices
@@ -101,12 +109,17 @@ function keyPressed() {
         // resets vertices and background. then adds and draws new ones
         allRandom();
     } else if(keyCode === ENTER) {
-        // playerInput state -> run state
-        pInput = false;
+        if(pInput) {
+            // playerInput state -> run state
+            pInput = false;
+            // update settings: ruleCantRepeatOn, dotSize and turnsPerFrame
+            updateSetings();
+        }
+
         // set if rule is on or off. Rule: can't repeat same vertex
         // ruleCantRepeatOn = document.querySelector('inputRule').checked // intento fallido
-        var elementCheckBox = document.getElementById("IdOfCheckBox");
-        ruleCantRepeatOn = document.getElementById("ruleCheck").checked;
+        // var elementCheckBox = document.getElementById("IdOfCheckBox");
+        
     } else if(keyCode === BACKSPACE) {
         // reset everything and redraw dot
         pInput = true;
@@ -114,9 +127,33 @@ function keyPressed() {
         points = [];
         fill(mainColor);
         drawPoint(mainPoint, dotSize);
+        if(mouseX < 0 || mouseY < 0) {
+            console.log("hola");
+        }
     }
 }
 
+// update run settings
+function updateSetings() {
+    // update bool rule. Rule: cant repeat vertex
+    ruleCantRepeatOn = document.getElementById("inputRule").checked;
+    // update dot size
+    let numCheck = document.getElementById("inputSize").value;
+    if( !isNaN(numCheck) ) {
+        dotSize = numCheck;
+    } else { 
+        // If not a number alert player
+    }
+    // update turns per frame
+    numCheck = document.getElementById("inputSpeed").value;
+    if( !isNaN(numCheck) ) {
+        turnsPerFrame = numCheck;
+    } else { 
+        // If not a number alert player
+    }
+}
+
+// creates a point in a random position with margin in mind
 function initializePoint() {
     let pos_x = (Math.random() * (canvas_x - 2 * margin)) + margin;
     let pos_y = (Math.random() * (canvas_y - 2 * margin)) + margin;
@@ -125,6 +162,7 @@ function initializePoint() {
     return newPoint;
 }
 
+// takes a point and a size and draws it
 function drawPoint(punto, size) {
     ellipse(punto.pos_x, punto.pos_y, size, size);
 }
