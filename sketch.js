@@ -35,21 +35,21 @@ function Punto() {
     this.color_g = Math.floor(Math.random() * 255)
     this.color_b = Math.floor(Math.random() * 255)
 
-	// position relative to square
-	this.pos_x = squareX + Math.floor(Math.random() * squareSize);
+    // position relative to square
+    this.pos_x = squareX + Math.floor(Math.random() * squareSize);
     this.pos_y = squareY + Math.floor(Math.random() * squareSize);
-	// random velocity
-	this.angle = Math.random() * TWO_PI;
-	this.speed_x = sin(this.angle) * 6;
+    // random velocity
+    this.angle = Math.random() * TWO_PI;
+    this.speed_x = sin(this.angle) * 6;
     this.speed_y = cos(this.angle) * 6;
     
-	// array of lines
-	this.lines_x = [];
-	this.lines_y = [];
+    // array of lines
+    this.lines_x = [];
+    this.lines_y = [];
 
-	// update position and draw
-	this.update = function() {
-		this.pos_x = this.pos_x + this.speed_x;
+    // update position and draw
+    this.update = function() {
+        this.pos_x = this.pos_x + this.speed_x;
 		this.pos_y = this.pos_y + this.speed_y;
 		// set color blue
 		fill(this.color_r, this.color_g, this.color_b);
@@ -61,17 +61,33 @@ function Punto() {
 
 	// check if collision with square
 	this.checkCollision = function() {
-		if (this.pos_x <= squareX || this.pos_x >= squareX + squareSize) {
+        // if passed squareboundary and still moving in that direction, reverse direction
+
+		if (this.pos_x <= squareX) {
 			// reverse horizontal speed
-			this.speed_x *= -1;
-			//save collision point to array
-			this.lines_x.push(this.pos_x);
-			this.lines_y.push(this.pos_y);
-		} else if (this.pos_y <= squareY || this.pos_y >= squareY + squareSize) {
-			this.speed_y *= -1;
-			this.lines_x.push(this.pos_x);
-			this.lines_y.push(this.pos_y);
-		}
+            if (this.speed_x < 0) {
+			    this.speed_x *= -1;
+            }
+		} else if (this.pos_x >= squareX + squareSize) {
+            if(this.speed_x > 0) {
+                this.speed_x *= -1;
+            }
+        } else if (this.pos_y >= squareY + squareSize) {
+            if(this.speed_y > 0) {
+                this.speed_y *= -1;
+            }
+        }
+        else if (this.pos_y <= squareY) {
+            if (this.speed_y < 0) {
+                this.speed_y *= -1;
+            }
+		} else {
+            // if no collision return. dont save line coordinates
+            return
+        }
+        //save collision point to array
+        this.lines_x.push(this.pos_x);
+        this.lines_y.push(this.pos_y);
 	}
 	// draw lines for each adjacent coordinates in lines_x/y arrays
 	this.drawLines = function() {
