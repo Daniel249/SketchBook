@@ -4,8 +4,10 @@ function setup() {
 	var ammountDots = 10;
 	initDots(ammountDots);
 }
+// canvas and square size
 var canvasSize = 600;
 var squareSize = 500;
+// set square location so equal margin from all 4 directions
 var squareX = (canvasSize - squareSize) / 2;
 var squareY = (canvasSize - squareSize) / 2;
 
@@ -65,18 +67,30 @@ class Punto {
 	}
 	// check if collision with square
 	checkCollision () {
-		if (this.pos_x <= squareX || this.pos_x >= squareX + squareSize) {
+		// if passed squareboundary and still moving in that direction, reverse direction
+        
+		if (this.pos_x <= squareX) {
 			// reverse horizontal speed
-			this.speed_x *= -1;
-			//save collision point to array
-			// this.lines_x.push(this.pos_x);
-			// this.lines_y.push(this.pos_y);
-		}
-		else if (this.pos_y <= squareY || this.pos_y >= squareY + squareSize) {
-			this.speed_y *= -1;
-			// this.lines_x.push(this.pos_x);
-			// this.lines_y.push(this.pos_y);
-		}
+            if (this.speed_x < 0) {
+			    this.speed_x *= -1;
+            }
+		} else if (this.pos_x >= squareX + squareSize) {
+            if(this.speed_x > 0) {
+                this.speed_x *= -1;
+            }
+        } else if (this.pos_y >= squareY + squareSize) {
+            if(this.speed_y > 0) {
+                this.speed_y *= -1;
+            }
+        }
+        else if (this.pos_y <= squareY) {
+            if (this.speed_y < 0) {
+                this.speed_y *= -1;
+            }
+		} else {
+            // if no collision return. dont save line coordinates
+            return
+        }
 	}
 	// draw lines for each adjacent coordinates in lines_x/y arrays
 	drawLines () {
