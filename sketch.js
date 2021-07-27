@@ -62,7 +62,7 @@ function Punto() {
 	// check if collision with square
 	this.checkCollision = function() {
         // if passed squareboundary and still moving in that direction, reverse direction
-
+        
 		if (this.pos_x <= squareX) {
 			// reverse horizontal speed
             if (this.speed_x < 0) {
@@ -111,7 +111,9 @@ function Punto() {
 
 function initDots(num) {
 	for (var i = 0; i < num; i++) {
-		var punto = new Punto();
+        var punto = new Punto();
+        punto.lines_x.push(punto.pos_x);
+        punto.lines_y.push(punto.pos_y);
 		Dots.push(punto);
 	}
 }
