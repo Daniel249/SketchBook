@@ -1,15 +1,24 @@
 function setup() {
 	createCanvas(canvasSize, canvasSize);
 	// initialize an ammount of Dots
-	var ammountDots = 10;
+    var ammountDots = 3;
 	initDots(ammountDots);
 }
+// canvas and square size
 var canvasSize = 600;
 var squareSize = 500;
+// set square location so equal margin from all 4 directions
 var squareX = (canvasSize - squareSize) / 2;
 var squareY = (canvasSize - squareSize) / 2;
 
-var Dots = []
+// Dots
+var Dots = [];
+
+var dotSize = 15;
+
+// lines
+var thickness = 4;
+
 
 function draw() {
 	background(200);
@@ -56,7 +65,7 @@ function Punto() {
 		// disable outline when drawing
 		noStroke();
 		// draw
-		ellipse(this.pos_x, this.pos_y, 10, 10);
+		ellipse(this.pos_x, this.pos_y, dotSize, dotSize);
 	}
 
 	// check if collision with square
@@ -95,6 +104,7 @@ function Punto() {
 		var last_y = this.lines_y[0];
 		// change color to green
 		stroke(this.color_r, this.color_g, this.color_b);
+        strokeWeight(thickness);
 		// loop from second position in array
 		for (var i = 1; i < this.lines_x.length; i++) {
 			// draw line from last saved point to current point
